@@ -53,7 +53,7 @@
         </div>
         <!-- 模态框 -->
         <div class="mo">
-            <el-dialog title="栏目" :visible.sync="dialogFormVisible">
+            <el-dialog title="栏目" :visible.sync="dialogFormVisible" height>
               <el-form :model="form">
                 <el-form-item label="栏目名称" :label-width="formLabelWidth">
                   <el-input v-model="form.name" ></el-input>
