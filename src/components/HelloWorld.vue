@@ -1,9 +1,5 @@
 <template>
 <div>
-  <div>owmeh </div><div>owmeh </div>
-  <div>owmeh </div>
-  <div>owmeh </div>
-  <div>owmeh </div>
 </div>
 </template>
 
