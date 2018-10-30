@@ -22,7 +22,7 @@
             </el-table-column>
             <el-table-column
               prop="parent.name"
-              label="国家"
+              label="父"
               width="120">
             </el-table-column>
             <el-table-column
@@ -58,9 +58,9 @@
                 <el-form-item label="栏目名称" :label-width="formLabelWidth">
                   <el-input v-model="form.name" ></el-input>
                 </el-form-item>
-                <el-form-item label="夫栏目" :label-width="formLabelWidth">
-                  <el-select v-model="form.parentId" placeholder="一级栏目">
-                    <el-option :key='c.id' v-for='c in station' :label="c.name" :value="c.id"></el-option>
+                <el-form-item label="父栏目" :label-width="formLabelWidth">
+                  <el-select v-model="form.parentId" filterable placeholder="一级栏目">
+                    <el-option v-for='c in station' :key='c.id' :label="c.name" :value="c.id" ></el-option>
                   </el-select>
                 </el-form-item>
                 <el-form-item label="概述" :label-width="formLabelWidth">
@@ -82,9 +82,9 @@ export default {
       return{
         station:[],
         multipleSelection:[],
-        dialogFormVisible: false,
-        form: {},
-        formLabelWidth: '120px',
+        dialogFormVisible:false,
+        form:{},
+        formLabelWidth:'120px',
       }  
     },
     methods:{
@@ -114,8 +114,6 @@ export default {
 	        this.stationd();
 				})
 				.catch((e)=>{
-          console.log(e);
-          
 					this.$notify.error({
 	          title: '错误',
 	          message: '提交失败！'
@@ -125,10 +123,11 @@ export default {
       },
       //打开
       toupdate(row){
+				row.parentId = row.parent.id;
         this.form=row;
-        row.parentId = row.parent.id;
         this.dialogFormVisible = true;
       },
+      //添加
       totianjia(){
         this.dialogFormVisible = true;
       },
@@ -168,24 +167,31 @@ export default {
           type: 'warning'
         }).then(() => {
           let ids=this.multipleSelection.map((item)=>{
-            return item.id
+            return item.id;
           });
-          axios.post('/manager/category/batchDeleteCategory',{ids})
-					.then(()=>{
-						this.$notify.success({
-		          title: '成功',
-		          message: '删除成功！'
-		        });
-		        this.stationd();
-					})
-					.catch(()=>{
-						this.$notify.error({
+          if(ids[0]==undefined){
+            this.$notify.error({
 		          title: '错误',
-		          message: '删除失败！'
+		          message: '请选择删除项'
 		        });
-					});
-        })
-      },
+          }else{
+              axios.post('/manager/category/batchDeleteCategory',{ids})
+              .then(()=>{
+                this.$notify.success({
+                  title: '成功',
+                  message: '删除成功！'
+                });
+                this.stationd();
+              })
+              .catch(()=>{
+                this.$notify.error({
+                  title: '错误',
+                  message: '删除失败！'
+                });
+              });
+            }
+          })
+        },
         //加载数据
         stationd(){
             axios.get('/manager/category/findAllCategory')
