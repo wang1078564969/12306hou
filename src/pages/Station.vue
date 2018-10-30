@@ -53,7 +53,7 @@
         </div>
         <!-- 模态框 -->
         <div class="mo">
-            <el-dialog title="栏目" :visible.sync="dialogFormVisible">
+            <el-dialog title="栏目" :visible.sync="dialogFormVisible" height>
               <el-form :model="form">
                 <el-form-item label="栏目名称" :label-width="formLabelWidth">
                   <el-input v-model="form.name" ></el-input>
@@ -88,6 +88,9 @@ export default {
       }  
     },
     methods:{
+      handleSelectionChange(val){
+				this.multipleSelection = val;
+      },
       //全选
       toggleSelection(rows) {
         if (rows) {
@@ -99,9 +102,6 @@ export default {
         }
       },
 
-      handleSelectionChange(val){
-				this.multipleSelection = val;
-      },
       //修改
       modfiydata(){
 				axios.post('/manager/category/saveOrUpdateCategory',this.form)
@@ -176,25 +176,25 @@ export default {
 		        });
           }else{
               axios.post('/manager/category/batchDeleteCategory',{ids})
-              .then(()=>{
-                this.$notify.success({
-                  title: '成功',
-                  message: '删除成功！'
-                });
-                this.stationd();
-              })
-              .catch(()=>{
-                this.$notify.error({
-                  title: '错误',
-                  message: '删除失败！'
-                });
+            .then(()=>{
+              this.$notify.success({
+                title: '成功',
+                message: '删除成功！'
               });
-            }
-          })
-        },
+              this.stationd();
+            })
+            .catch(()=>{
+              this.$notify.error({
+                title: '错误',
+                message: '删除失败！'
+              });
+            });
+          }
+        })
+      },
         //加载数据
-        stationd(){
-            axios.get('/manager/category/findAllCategory')
+      stationd(){
+          axios.get('/manager/category/findAllCategory')
             .then((result)=>{
               this.station=result.data.data;
             })
@@ -204,7 +204,7 @@ export default {
                     message:'网络异常！'
                 });
             })
-        },
+      },
     },
     created(){
       this.stationd();
