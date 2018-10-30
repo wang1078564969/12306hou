@@ -6,35 +6,30 @@
             <el-button type="danger" >删除</el-button>
         </div>
         <div class="article">
-            <el-table :data="tableData" style="width: 100%" :default-sort = "{prop: 'date', order: 'descending'}">
+            <el-table :data="exdata" style="width: 100%" :default-sort = "{prop: 'date', order: 'descending'}">
+                 <el-table-column
+                prop="id"
+                label="id"
+                sortable
+                width="180">
+                </el-table-column>
                 <el-table-column
-                prop="date"
+                prop="publishtime"
                 label="日期"
                 sortable
                 width="180">
                 </el-table-column>
                 <el-table-column
-                prop="name"
-                label="姓名"
+                prop="title"
+                label="title"
                 sortable
                 width="180">
                 </el-table-column>
                 <el-table-column
-                prop="address"
-                label="地址">
+                prop="readtimes"
+                label="阅读次数">
                 </el-table-column>
             </el-table>
-        </div>
-        <div class="block">
-            <span class="demonstration">直接前往</span>
-            <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page.sync="currentPage3"
-            :page-size="100"
-            layout="prev, pager, next, jumper"
-            :total="1000">
-            </el-pagination>
         </div>
     </div>
 </template>
@@ -44,16 +39,30 @@ export default {
     data(){
         return{
             exdata:{},
-
+            params:{
+                page:0,
+                pageSize:10,
+            }
         }
     },
     methods:{
+        //加载数据
         getexdata(){
-            axios.get('')
-        }
+            axios.get('/manager/article/findArticle',{
+                params:this.params
+            })
+            .then((ex) => {
+                this.exdata=ex;
+            }).catch(() => {
+                this.$notify.error({
+                    title:'错误',
+                    message:'网络异常！'
+                });
+            });
+        },
     },
     created(){
-
+        this.getexdata();
     },
 
 }
