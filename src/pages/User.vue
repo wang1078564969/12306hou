@@ -6,7 +6,7 @@
             <el-button type="danger" >删除</el-button>
         </div>
         <div class="table">
-          <el-table :data="users" border style="width: 100%" @selection-change="handleSelectionChange" height>
+          <el-table :data="users" border style="width: 100%" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55">
           </el-table-column>
             <el-table-column
@@ -134,8 +134,7 @@
 				})
       },
     },
-    
-    
+
     data() {
       return {
         ids:[],

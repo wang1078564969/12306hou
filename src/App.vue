@@ -51,6 +51,7 @@ export default {
   }
 }
 </script>
+
 <style>
   .el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 200px;
