@@ -27,6 +27,7 @@
         <div class="content">
             <div class="table">
                 <el-table
+                 height="800"
                     :data="allex.list"
                     style="width: 100%"
                     :default-sort = "{prop: 'id', order: 'descending'}">

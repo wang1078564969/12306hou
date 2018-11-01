@@ -1,18 +1,19 @@
 <template>
     <div class="user">
         <div class="bottom">
-            <el-button type="success" @click='totianjia()'>添加</el-button>
+            <el-button type="success" @click='addstation()'>添加</el-button>
             <el-button type="danger" @click='idsdelect()'>删除</el-button>
         </div>
         <div class="table">
-          <el-table :data="station" border style="width: 100%" @selection-change="handleSelectionChange" ref="multipleTable">
+          <el-table :data="station" @selection-change="handleSelectionChange" height="800">
             <el-table-column type="selection" width="55">
           </el-table-column>
             <el-table-column
               fixed
               prop="id"
               label="id"
-              width="70">
+              width="70"
+              sortable>
             </el-table-column>
             <el-table-column
               prop="name"
@@ -21,26 +22,10 @@
             </el-table-column>
             <el-table-column
               prop="parent.name"
-              label="父"
+              label="父栏目"
               width="120">
             </el-table-column>
             <el-table-column
-              prop="province"
-              label="省份"
-              width="120">
-            </el-table-column>
-            <el-table-column
-              prop="city"
-              label="市区"
-              width="120">
-            </el-table-column>
-            <el-table-column
-              prop="address"
-              label="地址"
-              width="300">
-            </el-table-column>
-            <el-table-column
-              fixed="right"
               label="操作"
               width="130">
               <template slot-scope="scope">
@@ -91,16 +76,15 @@ export default {
 				this.multipleSelection = val;
       },
       //全选
-      toggleSelection(rows) {
-        if (rows) {
-          rows.forEach(row => {
-            this.$refs.multipleTable.toggleRowSelection(row);
-          });
-        } else {
-          this.$refs.multipleTable.clearSelection();
-        }
-      },
-
+      // toggleSelection(rows) {
+      //   if (rows) {
+      //     rows.forEach(row => {
+      //       this.$refs.multipleTable.toggleRowSelection(row);
+      //     });
+      //   } else {
+      //     this.$refs.multipleTable.clearSelection();
+      //   }
+      // },
       //修改
       modfiydata(){
 				axios.post('/manager/category/saveOrUpdateCategory',this.form)
@@ -127,7 +111,7 @@ export default {
         this.dialogFormVisible = true;
       },
       //添加
-      totianjia(){
+      addstation(){
         this.dialogFormVisible = true;
       },
       //关闭

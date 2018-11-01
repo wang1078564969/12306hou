@@ -1,92 +1,78 @@
 <template>
-    <div class="user">
-        <div class="button">
-            <el-button type="success">添加</el-button>
-            <el-button type="info">全选</el-button>
-            <el-button type="danger" >删除</el-button>
-        </div>
-        <div class="table">
-          <el-table :data="users" border style="width: 100%" @selection-change="handleSelectionChange">
-            <el-table-column type="selection" width="55">
-          </el-table-column>
-            <el-table-column
-              fixed
-              prop="id"
-              label="id"
-              width="70">
-            </el-table-column>
-            <el-table-column
-              prop="regTime"
-              label="日期"
-              width="150">
-            </el-table-column>
-            <el-table-column
-              prop="username"
-              label="姓名"
-              width="120">
-            </el-table-column>
-            <el-table-column
-              prop="province"
-              label="国家"
-              width="120">
-            </el-table-column>
-            <el-table-column
-              prop="province"
-              label="省份"
-              width="120">
-            </el-table-column>
-            <el-table-column
-              prop="city"
-              label="市区"
-              width="120">
-            </el-table-column>
-            <el-table-column
-              prop="address"
-              label="地址"
-              width="300">
-            </el-table-column>
-            <el-table-column
-              prop="zip"
-              label="邮编"
-              width="120">
-            </el-table-column>
-            <el-table-column
-              prop="zip"
-              label="证件类型"
-              width="120">
-            </el-table-column>
-            <el-table-column
-              prop="zip"
-              label="身份证号"
-              width="120">
-            </el-table-column>
-            <el-table-column
-              prop="zip"
-              label="手机号"
-              width="120">
-            </el-table-column>
-            <el-table-column
-              prop="zip"
-              label="邮编"
-              width="120">
-            </el-table-column>
-            <el-table-column
-              prop="email"
-              label="邮箱"
-              width="120">
-            </el-table-column>
-            <el-table-column
-              fixed="right"
-              label="操作"
-              width="130">
-              <template slot-scope="scope">
-                <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
-                <el-button type="text" size="small" @click="deleteUser(scope.row.id)">删除</el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-        </div>
+  <div class="user">
+    <div class="button">
+      <el-button type="success" @click='adduser()'>添加</el-button>
+      <el-button type="danger">删除</el-button>
     </div>
+    <div class="table">
+      <el-table :data="users"  @selection-change="handleSelectionChange" height="800">
+        <el-table-column type="selection" width="55"></el-table-column>
+          <el-table-column
+            fixed
+            prop="id"
+            label="id"
+            width="70"
+            sortable>
+          </el-table-column>
+          <el-table-column
+            prop="nickname"
+            label="真实姓名"
+            width="150">
+          </el-table-column>
+          <el-table-column
+            prop="username"
+            label="姓名"
+            width="120">
+          </el-table-column>
+          <el-table-column
+            prop="email"
+              abel="电子邮箱"
+            width="120">
+          </el-table-column>
+          <el-table-column
+            prop="phone"
+            label="手机号"
+            width="120">
+          </el-table-column>
+          <el-table-column
+            prop="email"
+            label="邮箱"
+            width="120">
+          </el-table-column>
+          <el-table-column
+            label="操作"
+            width="130">
+            <template slot-scope="scope">
+              <el-button @click="openuser(scope.row)" type="text" size="small">修改</el-button>
+              <el-button type="text" size="small" @click="deleteUser(scope.row.id)">删除</el-button>
+            </template>
+          </el-table-column>
+      </el-table>
+    </div>
+        <!-- 模态框 -->
+    <div class="mo">
+          <el-dialog title="栏目" :visible.sync="dialogFormVisible" height>
+            <el-form :model="formuser">
+                <el-form-item label="名称" :label-width="formLabelWidth">
+                  <el-input v-model="formuser.username" ></el-input>
+                </el-form-item>
+                <el-form-item label="密码" :label-width="formLabelWidth">
+                  <el-input v-model="formuser.password" type="textarea" ></el-input>
+                </el-form-item>
+                <el-form-item label="真实姓名" :label-width="formLabelWidth">
+                  <el-input v-model="formuser.nickname" type="textarea" ></el-input>
+                </el-form-item>
+                <el-form-item label="email" :label-width="formLabelWidth">
+                  <el-input v-model="formuser.email" type="textarea" ></el-input>
+                </el-form-item>
+              </el-form>
+              <div slot="footer" class="dialog-footer">
+                <el-button @click="closemo()">取 消</el-button>
+                <el-button type="primary" @click="updatauser()">确 定</el-button>
+              </div>
+          </el-dialog>
+        </div>
+  </div>
 </template>
 
 <script>
@@ -110,7 +96,7 @@
 		          title: '成功',
 		          message: '删除成功！'
             });
-            this.getdata();
+            this.getuser();
           }).catch(()=>{
             this.$notify.error({
 		          title: '错误',
@@ -119,7 +105,7 @@
           });
       },
       //加载数据
-      getdata(){
+      getuser(){
         axios.get('/manager/user/findAllUser')
         .then((result)=>{
           this.users = result.data.data;
@@ -130,14 +116,46 @@
 	        });
 				})
       },
+      //用户信息
+      updatauser(){
+        axios.post('/manager/user/saveOrUpdateUser',this.formuser)
+        .then(() => {
+          this.$notify.success({
+            title: '成功',
+            message: '提交成功！'
+          });
+            this.getuser();
+            this.closemo();
+          }).catch((err) => {
+            this.$notify.error({
+              title: '错误',
+              message: '删除失败！'
+            });
+          });
+      },
+      //添加
+      adduser(){
+        this.dialogFormVisible = true;
+      },
+      //修改
+      openuser(row){
+        this.formuser=row;
+        this.dialogFormVisible = true;
+      },
+      //关闭
+      closemo(){
+        this.form = {};
+        this.dialogFormVisible = false;
+      },
     },
-
     created(){
-      this.getdata();
+      this.getuser();
     },
     data() {
       return {
-        ids:[],
+        dialogFormVisible:false,
+        formuser:{},
+        formLabelWidth:'120px',
         users: [],
         multipleSelection:[]
       }

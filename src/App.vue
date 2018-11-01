@@ -98,6 +98,7 @@ export default {
     height: 100%;
     background-color: #f0f0f0;
     padding: 1em;
+
   }
   .content > .right-content > .wrapper {
     /* box-sizing: border-box; */
@@ -106,6 +107,7 @@ export default {
     border-radius: 5px;
     background-color: #ffffff;
     padding: .5em;
+        overflow-y: auto;
   }
     .left_nav ul li {
     line-height: 2.6em;
