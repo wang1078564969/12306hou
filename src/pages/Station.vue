@@ -59,7 +59,7 @@
                   <el-input v-model="form.name" ></el-input>
                 </el-form-item>
                 <el-form-item label="父栏目" :label-width="formLabelWidth">
-                  <el-select v-model="station.parentId" filterable placeholder="一级栏目">
+                  <el-select v-model="form.parentId" filterable placeholder="一级栏目">
                     <el-option v-for='c in station' :key='c.id' :label="c.name" :value="c.id" ></el-option>
                   </el-select>
                 </el-form-item>

@@ -101,6 +101,7 @@
           return item.id;
         });
       },
+      //单个删除
       deleteUser(id){
         axios.get('/manager/user/deleteUserById', {
         params: {
@@ -115,13 +116,20 @@
             });
             this.getdata();
           }
-        }).catch((error)=>{
-          this.$notify.error({
+        }).then(()=>{
+            this.$notify.success({
+		          title: '成功',
+		          message: '删除成功！'
+            });
+            this.stationd();
+          }).catch(()=>{
+            this.$notify.error({
 		          title: '错误',
 		          message: '删除失败！'
 		        });
-        });
+          });
       },
+      //加载数据
       getdata(){
         axios.get('/manager/user/findAllUser')
         .then((result)=>{
@@ -135,6 +143,9 @@
       },
     },
 
+    created(){
+      this.getdata();
+    },
     data() {
       return {
         ids:[],
