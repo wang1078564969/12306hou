@@ -2,7 +2,7 @@
     <div class="user">
         <div class="bottom">
             <el-button type="success" @click='addstation()'>添加</el-button>
-            <el-button type="danger" @click='idsdelect()'>删除</el-button>
+            <el-button type="danger" @click='idsdelect()'>删除选中</el-button>
         </div>
         <div class="table">
           <el-table :data="station" @selection-change="handleSelectionChange" height="800">
