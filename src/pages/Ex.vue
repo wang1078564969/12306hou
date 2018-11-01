@@ -11,6 +11,14 @@
                     :value="item.id">
                     </el-option>
                 </el-select>
+                <el-select v-model="params.pageSize" filterable placeholder="请选择">
+                    <el-option
+                    v-for="item in 10"
+                    :key="item"
+                    :label="item"
+                    :value="item">
+                    </el-option>
+                </el-select>
             </div>
             <div class="input">
                 <el-input placeholder="请输入内容" v-model="params.keywords" clearable ></el-input>
@@ -54,9 +62,9 @@
                 <el-pagination
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
-                    :page-size="5"
+                    :page-size='this.params.pageSize'
                     layout="prev, pager, next, jumper"
-                    :total="100">
+                    :total="this.allex.total">
                 </el-pagination>
             </div>
         </div>
@@ -74,7 +82,7 @@
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button @click="nomodel">取 消</el-button>
+                <el-button @click="nomodel()">取 消</el-button>
                 <el-button type="primary" @click="poshupdate()">确 定</el-button>
             </div>
             </el-dialog>
@@ -89,7 +97,6 @@ export default {
             formLabelWidth:'120px',
             visible:false,
             allex:[],
-            toinput:[],
             category:[],
             formex:{},
             params:{
@@ -110,7 +117,6 @@ export default {
         },
         //修改
         toupdateex(row){
-
             row.categoryId=row.category.id;
             this.formex=row;
             this.visible = true;
@@ -132,8 +138,8 @@ export default {
                     title: '成功',
                     message: '提交成功！'
                 });
-                this.getex;
                 this.nomodel;
+                this.getex;
             }).catch((err) => {
                 this.$notify.error({
                     title: '错误',
@@ -143,14 +149,13 @@ export default {
         },
         //单个删除
         delectex(id){
-            axios.get('/manager/article/deleteArticleById='+id).then(() => {
-                this.$notify.s
+            axios.get('/manager/article/deleteArticleById?id='+id).then(() => {
             }).then(()=>{
               this.$notify.success({
                 title: '成功',
                 message: '删除成功！'
               });
-              this.stationd();
+              this.getcategory();
             })
             .catch(()=>{
               this.$notify.error({
@@ -182,7 +187,7 @@ export default {
                     message:'网络异常！'
                 });
             });
-        }
+        },
     },
     watch:{
         params:{
@@ -199,6 +204,10 @@ export default {
 }
 </script>
 <style>
+    .quill{
+        width: 85%;
+        margin: 20px auto 0;
+    }
     .nav>div{
         float: left;
         margin-left:8px;

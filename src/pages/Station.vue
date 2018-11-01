@@ -2,7 +2,6 @@
     <div class="user">
         <div class="bottom">
             <el-button type="success" @click='totianjia()'>添加</el-button>
-            <el-button type="info" @click="toggleSelection()">全选</el-button>
             <el-button type="danger" @click='idsdelect()'>删除</el-button>
         </div>
         <div class="table">

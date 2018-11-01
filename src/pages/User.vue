@@ -16,7 +16,6 @@
               width="70">
             </el-table-column>
             <el-table-column
-              fixed 
               prop="regTime"
               label="日期"
               width="150">
@@ -82,7 +81,6 @@
               width="130">
               <template slot-scope="scope">
                 <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
-                <el-button type="text" size="small">编辑</el-button>
                 <el-button type="text" size="small" @click="deleteUser(scope.row.id)">删除</el-button>
               </template>
             </el-table-column>
@@ -107,21 +105,12 @@
         params: {
           id:id
         }
-      }).then((result)=>{
-          if(result.data.stauts == 200){
-            this.$notify({
-              title: '成功',
-              message: result.data.message,
-              type: 'success'
-            });
-            this.getdata();
-          }
-        }).then(()=>{
+      }).then(()=>{
             this.$notify.success({
 		          title: '成功',
 		          message: '删除成功！'
             });
-            this.stationd();
+            this.getdata();
           }).catch(()=>{
             this.$notify.error({
 		          title: '错误',
