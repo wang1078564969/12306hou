@@ -29,8 +29,7 @@
                 <el-table
                  height="800"
                     :data="allex.list"
-                    style="width: 100%"
-                    :default-sort = "{prop: 'id', order: 'descending'}">
+                    >
                     <el-table-column
                     prop="id"
                     label="id"
@@ -72,6 +71,7 @@
         <div class="model">
             <el-dialog title="文章管理" :visible.sync="visible" fullscreen>
             <el-form :model="formex">
+                {{formex}}
                 <el-form-item label="活动名称" :label-width="formLabelWidth">
                     <el-input v-model="formex.title" autocomplete="off"></el-input>
                 </el-form-item>
@@ -118,7 +118,7 @@ export default {
             category:[],
             formex:{
                 liststyle:'style-one',
-				fileIds:[]
+				fileIds:[],
             },
             params:{
                 page:0,
@@ -136,23 +136,52 @@ export default {
             this.params.page=val-1;
             this.getex();
         },
-        //修改
+        //修改  
         toupdateex(row){
+            this.visible = true;
+            //克隆当前数据
             let article = _.clone(row);
 			article.categoryId = article.category.id;
-			delete article.category;
+            delete article.category;
+            //默认显示
+            this.fileList=article.articleFileVMs.map((item)=>{
+                return{
+                    name:item.cmsFile.id,
+                    url:'http://39.108.81.60.8888/grou1/'+item.cmsFile.id
+                }
+            })
+        // 4.1 依赖栏目 category - > categoryId 
+				// article.categoryId = article.category.id;
+				// delete article.category;
+				//// 4.2 依赖文件 articleFileVMs -> fileIds
+				// article.fileIds = article.articleFileVMs.map(item=>item.cmsFile.id);
+				// delete article.articleFileVMs;
+				// // 4.3 取消默认空值
+				// for(let key in article){
+				// 	let val = article[key]
+				// 	if(!val){
+				// 		delete article[key];
+				// 	}
+				// }
 
-            // row.categoryId=row.category.id;
             this.formex=article;
-            this.visible = true;
         },
         //添加
         addex(){
+            this.formex={
+                liststyle:'style-one',
+				fileIds:[],
+            },
+            this.fileList=[];
             this.visible = true;
         },
+
         //关闭mo
         nomodel(){
-            this.formex={};
+            this.formex={
+                liststyle:'style-one',
+				fileIds:[],
+            },
             this.visible = false;
         },
         // 
@@ -182,12 +211,13 @@ export default {
                 });
             });
         },
+
         handleUploadSuccess(response, file, fileList){
             file.name = response.data.id;
-            console.log(response,file,fileList);
+            console.log(this.formex.fileIds);
             this.formex.fileIds.push(response.data.id);
         },
-        //添加修改
+        //提交
         pupdate(){
             this.formex.source=this.$refs.de.d_render;
             axios.post('/manager/article/saveOrUpdateArticle',this.formex)

@@ -108,6 +108,7 @@ export default {
     background-color: #ffffff;
     padding: .5em;
         overflow-y: auto;
+        overflow-x: auto;
   }
     .left_nav ul li {
     line-height: 2.6em;
