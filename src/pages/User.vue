@@ -54,16 +54,16 @@
           <el-dialog title="栏目" :visible.sync="dialogFormVisible" height>
             <el-form :model="formuser">
                 <el-form-item label="名称" :label-width="formLabelWidth">
-                  <el-input v-model="formuser.username" ></el-input>
+                  <el-input v-model="formuser.username"></el-input>
                 </el-form-item>
                 <el-form-item label="密码" :label-width="formLabelWidth">
-                  <el-input v-model="formuser.password" type="textarea" ></el-input>
+                  <el-input v-model="formuser.password"></el-input>
                 </el-form-item>
                 <el-form-item label="真实姓名" :label-width="formLabelWidth">
-                  <el-input v-model="formuser.nickname" type="textarea" ></el-input>
+                  <el-input v-model="formuser.nickname"></el-input>
                 </el-form-item>
                 <el-form-item label="email" :label-width="formLabelWidth">
-                  <el-input v-model="formuser.email" type="textarea" ></el-input>
+                  <el-input v-model="formuser.email"></el-input>
                 </el-form-item>
               </el-form>
               <div slot="footer" class="dialog-footer">

@@ -60,7 +60,6 @@
             </div>
             <div class="pagination">
                 <el-pagination
-                    @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
                     :page-size='this.params.pageSize'
                     layout="prev, pager, next, jumper"
@@ -88,13 +87,13 @@
                 </el-form-item>
                 <el-upload
                   class="upload-demo"
-                  action="http://120.78.164.247:8099/manager/file/upload"
+                  action="http://47.107.71.18:8099/manager/file/upload"
                     :on-success='handleUploadSuccess'
                     :file-list='fileList'
                     :on-remove='handleFileRemove'
                   list-type="picture">
-                  <el-button size="small" type="primary">点击上传</el-button>
-                  <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                  <el-button size="small" type="text">点击上传</el-button>
+                  <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
                 </el-upload>
                 <el-form-item><mavon-editor  ref='de' v-model="formex.content"/></el-form-item>
             </el-form>
@@ -128,10 +127,6 @@ export default {
     },
     methods:{
         //翻页
-        handleSizeChange(val) {
-            this.params.pageSize=val-1;
-            this.getex();
-        },
         handleCurrentChange(val) {
             this.params.page=val-1;
             this.getex();
@@ -168,11 +163,11 @@ export default {
         },
         //添加
         addex(){
+            this.fileList=[];
             this.formex={
                 liststyle:'style-one',
 				fileIds:[],
             },
-            this.fileList=[];
             this.visible = true;
         },
 
@@ -189,7 +184,7 @@ export default {
              //1. 通过id删除附件
             axios.get('/manager/file/delete',{
                 params:{
-                    id:file.name
+                    id:file.id
                 }
             })
             .then(()=>{
