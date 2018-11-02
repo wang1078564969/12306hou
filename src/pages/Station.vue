@@ -64,6 +64,7 @@ import axios from '@/http/axios';
 export default {
     data(){
       return{
+
         station:[],
         multipleSelection:[],
         dialogFormVisible:false,
@@ -75,6 +76,7 @@ export default {
       handleSelectionChange(val){
 				this.multipleSelection = val;
       },
+
       //全选
       // toggleSelection(rows) {
       //   if (rows) {
@@ -96,7 +98,7 @@ export default {
 	        this.closemo();
 	        this.stationd();
 				})
-				.catch((e)=>{
+				.catch(()=>{
 					this.$notify.error({
 	          title: '错误',
 	          message: '提交失败！'
@@ -106,8 +108,11 @@ export default {
       },
       //打开
       toupdate(row){
-				row.parentId = row.parent.id;
-        this.form=row;
+        let article = _.clone(row);
+			  article.parentId = article.parent.id;
+			  delete article.parent.id;
+				// row.parentId = row.parent.id;
+        this.form=article;
         this.dialogFormVisible = true;
       },
       //添加

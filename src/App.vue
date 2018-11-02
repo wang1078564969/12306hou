@@ -5,7 +5,7 @@
     </div>
     <div class="content">
       <div class="left-nav">
-        <el-menu default-active="4" class="el-menu-vertical-demo" router>
+        <el-menu default-active="user" class="el-menu-vertical-demo" router>
       <el-menu-item index="station">
         <i class="el-icon-location"></i>
         <span slot="title">车站管理</span>

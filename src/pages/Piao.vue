@@ -1,5 +1,9 @@
 <template>
     <div class="user">
-        234
+        <div class="header">
+            <div class="">
+
+            </div>
+        </div>
     </div>
 </template>

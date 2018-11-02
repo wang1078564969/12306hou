@@ -73,18 +73,34 @@
             <el-dialog title="文章管理" :visible.sync="visible" fullscreen>
             <el-form :model="formex">
                 <el-form-item label="活动名称" :label-width="formLabelWidth">
-                <el-input v-model="formex.title" autocomplete="off"></el-input>
+                    <el-input v-model="formex.title" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="栏目" :label-width="formLabelWidth">
+                    <el-select v-model="formex.categoryId" placeholder="请选择活动区域">
+                        <el-option :key='c.id' v-for='c in category' :label="c.name" :value="c.id"></el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="活动区域" :label-width="formLabelWidth">
-                <el-select v-model="formex.liststyle" placeholder="请选择活动区域">
-                    <el-option label="区域一" value="style-one"></el-option>
-                    <el-option label="区域二" value="style-two"></el-option>
-                </el-select>
+                    <el-select v-model="formex.liststyle" placeholder="请选择活动区域">
+                        <el-option label="区域一" value="style-one"></el-option>
+                        <el-option label="区域二" value="style-two"></el-option>
+                    </el-select>
                 </el-form-item>
+                <el-upload
+                  class="upload-demo"
+                  action="http://120.78.164.247:8099/manager/file/upload"
+                    :on-success='handleUploadSuccess'
+                    :file-list='fileList'
+                    :on-remove='handleFileRemove'
+                  list-type="picture">
+                  <el-button size="small" type="primary">点击上传</el-button>
+                  <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                </el-upload>
+                <el-form-item><mavon-editor  ref='de' v-model="formex.content"/></el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="nomodel()">取 消</el-button>
-                <el-button type="primary" @click="poshupdate()">确 定</el-button>
+                <el-button type="primary" @click="pupdate()">确 定</el-button>
             </div>
             </el-dialog>
         </div>
@@ -95,11 +111,15 @@ import axios from '@/http/axios'
 export default {
     data(){
         return{
+            fileList:[],
             formLabelWidth:'120px',
             visible:false,
             allex:[],
             category:[],
-            formex:{},
+            formex:{
+                liststyle:'style-one',
+				fileIds:[]
+            },
             params:{
                 page:0,
                 pageSize:10
@@ -118,8 +138,12 @@ export default {
         },
         //修改
         toupdateex(row){
-            row.categoryId=row.category.id;
-            this.formex=row;
+            let article = _.clone(row);
+			article.categoryId = article.category.id;
+			delete article.category;
+
+            // row.categoryId=row.category.id;
+            this.formex=article;
             this.visible = true;
         },
         //添加
@@ -131,20 +155,53 @@ export default {
             this.formex={};
             this.visible = false;
         },
-        //添加
-        poshupdate(){
-            axios.posh('/manager/article/saveOrUpdateArticle',this.formex)
+        // 
+        handleFileRemove(file){
+             //1. 通过id删除附件
+            axios.get('/manager/file/delete',{
+                params:{
+                    id:file.name
+                }
+            })
+            .then(()=>{
+                this.$notify.success({
+                    title: '成功',
+                    message: '删除成功！'
+                });
+                //2. 从fileIds中挪出
+                _.remove(this.formex.fileIds,(id)=>{
+                    return id == file.name
+                })
+                this.formex.fileIds.push(1);
+                this.formex.fileIds.pop();
+            })
+            .catch(()=>{
+                this.$notify.error({
+                    title: '错误',
+                    message: '删除失败！'
+                });
+            });
+        },
+        handleUploadSuccess(response, file, fileList){
+            file.name = response.data.id;
+            console.log(response,file,fileList);
+            this.formex.fileIds.push(response.data.id);
+        },
+        //添加修改
+        pupdate(){
+            this.formex.source=this.$refs.de.d_render;
+            axios.post('/manager/article/saveOrUpdateArticle',this.formex)
             .then(() => {
                 this.$notify.success({
                     title: '成功',
                     message: '提交成功！'
                 });
-                this.nomodel;
-                this.getex;
+                this.nomodel();
+                this.getex();
             }).catch((err) => {
                 this.$notify.error({
                     title: '错误',
-                    message: '删除失败！'
+                    message: '添加失败！'
               });
             });
         },
@@ -156,7 +213,7 @@ export default {
                 title: '成功',
                 message: '删除成功！'
               });
-              this.getcategory();
+              this.getex();
             })
             .catch(()=>{
               this.$notify.error({
@@ -165,7 +222,7 @@ export default {
               });
             });
         },
-        //加载数据
+        //加载数据栏目
         getcategory(){
             axios.get('/manager/category/findAllCategory')
             .then((result) => {

@@ -6,6 +6,7 @@ import Piao from '@/pages/Piao'
 import Ex from '@/pages/Ex'
 import Station from '@/pages/Station'
 
+
 Vue.use(Router)
 
 export default new Router({
