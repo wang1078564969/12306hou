@@ -29,7 +29,7 @@ export default {
                 
                 if(re.staus==200&&re.data.message=='登陆成功'){
                     window.vm.currentComponent='App';
-                    locationStorage.setItem('user',JSON.stringify(result.data))
+                    locationStorage.setItem('user',JSON.stringify(re.data))
                 }
             })
             .catch(()=>{
