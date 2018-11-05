@@ -15,7 +15,7 @@ axios.interceptors.request.use((config) => {
 })
 axios.interceptors.response.use((response)=>{
 	if (response&&response.data.status==500&&response=='尚未登陆，请登陆！') {
-		window.vm.currentComponent='/Login';
+		window.vm.currentComponent='Login';
 	}
 	return response
 })
