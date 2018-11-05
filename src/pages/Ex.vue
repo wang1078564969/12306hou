@@ -133,33 +133,32 @@ export default {
         },
         //修改  
         toupdateex(row){
-            this.visible = true;
+           
             //克隆当前数据
             let article = _.clone(row);
-			article.categoryId = article.category.id;
+            article.categoryId = article.category.id;
             delete article.category;
             //默认显示
             this.fileList=article.articleFileVMs.map((item)=>{
                 return{
                     name:item.cmsFile.id,
-                    url:'http://39.108.81.60.8888/grou1/'+item.cmsFile.id
+					url:'http://39.108.81.60:8888/group1/'+item.cmsFile.id
                 }
             })
-        // 4.1 依赖栏目 category - > categoryId 
-				// article.categoryId = article.category.id;
-				// delete article.category;
-				//// 4.2 依赖文件 articleFileVMs -> fileIds
-				// article.fileIds = article.articleFileVMs.map(item=>item.cmsFile.id);
-				// delete article.articleFileVMs;
-				// // 4.3 取消默认空值
-				// for(let key in article){
-				// 	let val = article[key]
-				// 	if(!val){
-				// 		delete article[key];
-				// 	}
-				// }
+
+            	article.fileIds = article.articleFileVMs.map(item=>item.cmsFile.id);
+				delete article.articleFileVMs;
+				// 4.2 依赖文件 articleFileVMs -> fileIds1·a
+				// 4.3 取消默认空值
+				for(let key in article){
+					let val = article[key]
+					if(!val){
+						delete article[key];
+					}
+				}
 
             this.formex=article;
+            this.visible = true;
         },
         //添加
         addex(){
@@ -173,18 +172,14 @@ export default {
 
         //关闭mo
         nomodel(){
-            this.formex={
-                liststyle:'style-one',
-				fileIds:[],
-            },
             this.visible = false;
         },
         // 
         handleFileRemove(file){
-             //1. 通过id删除附件
+             //1. 通过id删除附件         
             axios.get('/manager/file/delete',{
                 params:{
-                    id:file.id
+                    id:file.name
                 }
             })
             .then(()=>{
@@ -206,29 +201,31 @@ export default {
                 });
             });
         },
-
         handleUploadSuccess(response, file, fileList){
             file.name = response.data.id;
-            console.log(this.formex.fileIds);
             this.formex.fileIds.push(response.data.id);
         },
         //提交
         pupdate(){
             this.formex.source=this.$refs.de.d_render;
+            console.log(this.formex);
             axios.post('/manager/article/saveOrUpdateArticle',this.formex)
-            .then(() => {
+            .then((e) => {
+                console.log(e);
+                
                 this.$notify.success({
                     title: '成功',
                     message: '提交成功！'
                 });
-                this.nomodel();
                 this.getex();
+                this.nomodel();
             }).catch((err) => {
                 this.$notify.error({
                     title: '错误',
                     message: '添加失败！'
               });
             });
+            console.log(this.formex);
         },
         //单个删除
         delectex(id){
@@ -263,6 +260,8 @@ export default {
             axios.get('/manager/article/findArticle',{
                 params:this.params
             }).then((result) => {
+                console.log(result);
+                
                 this.allex=result.data.data;
             }).catch((err) => {
                 this.$notify.error({

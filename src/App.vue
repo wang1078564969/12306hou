@@ -1,11 +1,24 @@
 <template>
   <div id="app">
     <div class="header">
-      <div class="title">12306管理</div>
+      <div class="title">12306后台管理</div>
+      <div class="userd">
+          <img src="user.userface" alt="">
+          <i>{{user.nickname}}</i>
+          <i class='el-icon-setting'></i>
+          <i class="el-icon-error"></i>
+      </div>
+      <div class="clear">
+
+      </div>
     </div>
     <div class="content">
       <div class="left-nav">
         <el-menu default-active="" class="el-menu-vertical-demo" router>
+          <el-menu-item index="/">
+        <i class="el-icon-menu"></i>
+        <span slot="title">欢迎</span>
+      </el-menu-item>
       <el-menu-item index="station">
         <i class="el-icon-location"></i>
         <span slot="title">车站管理</span>
@@ -41,11 +54,15 @@ export default {
   },
   data() {
       return {
-       
+        user:null
       };
     },
+  creatend(){
+    let user =JSON.parse(localStorage.getItem('user'));
+    this.user=user;
+  },
   mounted(){
-    this.$router.push(url);
+    this.$router.push('/');
   },
   methods: {
   }
@@ -73,10 +90,11 @@ export default {
   }
   .header {
     width: 100%;
-    background-color: teal;
+    background-color:rgb(81, 125, 219);
   }
   .header .title {
     margin-left: 20px;
+    float: left;
     color: #ffffff;
     line-height: 70px;
     font-size: 24px;
@@ -107,12 +125,27 @@ export default {
     border-radius: 5px;
     background-color: #ffffff;
     padding: .5em;
-        overflow-y: auto;
-        overflow-x: auto;
+    overflow-y: auto;
+    overflow-x: auto;
   }
-    .left_nav ul li {
+  .left_nav ul li {
     line-height: 2.6em;
     text-align: center;
     border-bottom: 1px solid #ededed;
+  }
+  .userd{
+    position:absolute;
+    right: 10px;
+    margin-right: 50px
+  }
+  .userd>i{
+    margin-left: 20px;
+    font-style:normal;
+    color: #ffffff;
+    line-height: 70px;
+    font-size: 20px;
+  }
+  .clear{
+    clear: both;
   }
 </style>

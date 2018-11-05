@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import Login from './Login'
 
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
@@ -17,10 +18,23 @@ window._ = require('lodash');
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
-new Vue({
+let vm=new Vue({
   el: '#app',
   router,
-  components: { App},
-  template: '<App/>'
+  data:{
+    currentComponent:'Login'
+  }, 
+  components: { App,Login },
+  created(){
+    let user=JSON.parse(localStorage.getItem('user'))
+    if(user&&user.id){
+      this.currentComponent='App'
+    }else{
+      this.currentComponent='Login'
+    }
+  },
+  template:`<component v-bind:is="currentComponent"></compinent>`
 })
+
+window.vm = vm;
 
