@@ -2,6 +2,7 @@
     <div class="login">
         <h2>12306后台管理系统</h2>
         <el-form :model="form">
+            {{form}}
             <el-form-item label='用户名'>
                 <el-input v-model='form.username'></el-input>
             </el-form-item>
@@ -24,8 +25,10 @@ export default {
         login(){
             axios.post('/login',this.form)
             .then((re)=>{
+                console.log(re);
+                
                 if(re.staus==200&&re.data.message=='登陆成功'){
-                    window.currentComponent='App';
+                    window.vm.currentComponent='App';
                     locationStorage.setItem('user',JSON.stringify(result.data))
                 }
             })
