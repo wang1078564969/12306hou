@@ -25,7 +25,6 @@ let vm=new Vue({
     currentComponent:'Login'
   }, 
   components: { App,Login },
-  
   template: `
 		<component v-bind:is="currentComponent"></component>
   `,
@@ -38,6 +37,5 @@ let vm=new Vue({
     }
   },
 })
-
 window.vm = vm;
 
