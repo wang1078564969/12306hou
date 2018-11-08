@@ -25,15 +25,18 @@ let vm=new Vue({
     currentComponent:'Login'
   }, 
   components: { App,Login },
-  created(){
-    let user=JSON.parse(localStorage.getItem('user'))
-    if(user&&user.id){
-      this.currentComponent='App'
-    }else{
-      this.currentComponent='Login'
+  
+  template: `
+		<component v-bind:is="currentComponent"></component>
+  `,
+  created() {
+    let user = JSON.parse(localStorage.getItem('user'))
+    if (user && user.id) {
+      this.currentComponent = 'App'
+    } else {
+      this.currentComponent = 'Login'
     }
   },
-  template:`<component v-bind:is="currentComponent"></compinent>`
 })
 
 window.vm = vm;

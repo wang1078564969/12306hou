@@ -59,7 +59,7 @@ export default {
     },
   creatend(){
     let user =JSON.parse(localStorage.getItem('user'));
-    this.user=user
+    this.user=user;
   },
   mounted(){
     this.$router.push('/');

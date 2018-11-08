@@ -145,7 +145,6 @@ export default {
 					url:'http://39.108.81.60:8888/group1/'+item.cmsFile.id
                 }
             })
-
             	article.fileIds = article.articleFileVMs.map(item=>item.cmsFile.id);
 				delete article.articleFileVMs;
 				// 4.2 依赖文件 articleFileVMs -> fileIds1·a

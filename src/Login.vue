@@ -23,11 +23,10 @@ export default {
     },
     methods:{
         login(){
+
             axios.post('/login',this.form)
             .then((re)=>{
-                console.log(re);
-                
-                if(re.staus==200&&re.data.message=='登陆成功'){
+                if(re.status==200){
                     window.vm.currentComponent='App';
                     locationStorage.setItem('user',JSON.stringify(re.data))
                 }
