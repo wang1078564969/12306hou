@@ -54,7 +54,7 @@
           <el-dialog title="栏目" :visible.sync="dialogFormVisible" height>
             <el-form :model="formuser">
                 <el-form-item label="名称" :label-width="formLabelWidth">
-                  <el-input v-model="formuser.username"></el-input>
+                  <el-input v-model="formuser.username" lazy></el-input>
                 </el-form-item>
                 <el-form-item label="密码" :label-width="formLabelWidth">
                   <el-input v-model="formuser.password"></el-input>

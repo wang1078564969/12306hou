@@ -133,7 +133,6 @@ export default {
         },
         //修改  
         toupdateex(row){
-           
             //克隆当前数据
             let article = _.clone(row);
             article.categoryId = article.category.id;
@@ -155,7 +154,6 @@ export default {
 						delete article[key];
 					}
 				}
-
             this.formex=article;
             this.visible = true;
         },
@@ -168,12 +166,10 @@ export default {
             },
             this.visible = true;
         },
-
         //关闭mo
         nomodel(){
             this.visible = false;
         },
-        // 
         handleFileRemove(file){
              //1. 通过id删除附件         
             axios.get('/manager/file/delete',{

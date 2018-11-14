@@ -23,7 +23,6 @@ export default {
     },
     methods:{
         login(){
-
             axios.post('/login',this.form)
             .then((re)=>{
                 if(re.status==200){
