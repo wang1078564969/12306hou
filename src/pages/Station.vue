@@ -64,7 +64,6 @@ import axios from '@/http/axios';
 export default {
     data(){
       return{
-
         station:[],
         multipleSelection:[],
         dialogFormVisible:false,
@@ -109,9 +108,14 @@ export default {
       //打开
       toupdate(row){
         let article = _.clone(row);
-			  article.parentId = article.parent.id;
-			  delete article.parent.id;
-				// row.parentId = row.parent.id;
+			  article.parentId = article.parent?article.parent.id:undefined;
+        delete article.parent;
+        for(let key in article){
+					let val = article[key]
+					if(!val){
+						delete article[key];
+					}
+				}
         this.form=article;
         this.dialogFormVisible = true;
       },

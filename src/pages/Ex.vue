@@ -256,7 +256,6 @@ export default {
                 params:this.params
             }).then((result) => {
                 console.log(result);
-                
                 this.allex=result.data.data;
             }).catch((err) => {
                 this.$notify.error({
