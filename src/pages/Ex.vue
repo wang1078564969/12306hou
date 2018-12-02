@@ -203,11 +203,8 @@ export default {
         //提交
         pupdate(){
             this.formex.source=this.$refs.de.d_render;
-            console.log(this.formex);
             axios.post('/manager/article/saveOrUpdateArticle',this.formex)
             .then((e) => {
-                console.log(e);
-                
                 this.$notify.success({
                     title: '成功',
                     message: '提交成功！'
