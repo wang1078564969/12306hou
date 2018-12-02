@@ -75,7 +75,6 @@ export default {
       handleSelectionChange(val){
 				this.multipleSelection = val;
       },
-
       //全选
       // toggleSelection(rows) {
       //   if (rows) {
